@@ -1,0 +1,90 @@
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { FaUser, FaLock } from "react-icons/fa";
+
+export default function Login() {
+      const [loginData, setLoginData] = useState({
+        email: "",
+        password: ""
+        });
+    
+        const [registerData, setRegisterData] = useState({
+        name: "",
+        email: "",
+        password: ""
+        });
+    
+    const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+        const res = await axios.post("http://localhost:5001/api/auth/login", loginData);
+
+        if (res.data.success) {
+        alert("Login successful!");
+
+        // store user info if needed
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+
+        // redirect
+        navigate("/dashboard");
+        } else {
+        alert(res.data.message);
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Login failed. Please try again.");
+    }
+    };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
+      <div className="bg-gray-800 rounded-3xl shadow-2xl w-full max-w-md p-10">
+        <h2 className="text-3xl font-bold mb-6 text-white text-center">Welcome Back</h2>
+        <form onSubmit={handleLogin} className="space-y-6">
+          {/* Username Field */}
+          <div className="relative">
+            <FaUser className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Username"
+              className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
+
+          {/* Password Field */}
+          <div className="relative">
+            <FaLock className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-purple-500 rounded-xl text-white font-bold hover:bg-purple-400 transition shadow-lg"
+          >
+            Login
+          </button>
+        </form>
+
+        <p className="text-gray-400 mt-6 text-center">
+          Don't have an account?{" "}
+          <span
+            className="text-purple-400 font-bold cursor-pointer hover:underline"
+            onClick={() => navigate("/register")}
+          >
+            Sign Up
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+}
