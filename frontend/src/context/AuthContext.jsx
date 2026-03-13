@@ -1,18 +1,17 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+// Make sure you install: npm install jwt-decode@3.1.2
+import jwtDecode from "jwt-decode";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true); // Track auth initialization
 
-  // LOGIN OR REGISTER
+  // LOGIN FUNCTION
   const login = (jwtToken) => {
-
     try {
-
       const decoded = jwtDecode(jwtToken);
       const currentTime = Date.now() / 1000;
 
@@ -22,67 +21,67 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
-      // save token
       localStorage.setItem("token", jwtToken);
-
       setToken(jwtToken);
 
       setUser({
         id: decoded.id,
-        email: decoded.email
+        email: decoded.email,
       });
 
+      console.log("Login successful, token stored:", localStorage.getItem("token"));
     } catch (error) {
-      console.log("Invalid token");
+      console.error("Invalid token:", error);
       logout();
     }
   };
 
-  // LOGOUT
+  // LOGOUT FUNCTION
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
     setToken(null);
+    console.log("Logged out, token removed from localStorage");
   };
 
-  // LOAD TOKEN WHEN APP STARTS
+  // LOAD TOKEN ON APP START
   useEffect(() => {
-
     const savedToken = localStorage.getItem("token");
 
-    if (!savedToken) return;
+    if (!savedToken) {
+      setLoading(false);
+      return;
+    }
 
     try {
-
       const decoded = jwtDecode(savedToken);
       const currentTime = Date.now() / 1000;
 
       if (decoded.exp < currentTime) {
         logout();
+        setLoading(false);
         return;
       }
 
       setToken(savedToken);
-
       setUser({
         id: decoded.id,
         email: decoded.email
       });
-
+      console.log("Auto-login successful, token loaded:", savedToken);
     } catch (error) {
       logout();
+    } finally {
+      setLoading(false);
     }
-
   }, []);
 
   // AUTO LOGOUT WHEN TOKEN EXPIRES
   useEffect(() => {
-
     if (!token) return;
 
     const decoded = jwtDecode(token);
-    const expiryTime = decoded.exp * 1000;
-    const remainingTime = expiryTime - Date.now();
+    const remainingTime = decoded.exp * 1000 - Date.now();
 
     const timer = setTimeout(() => {
       logout();
@@ -90,17 +89,14 @@ export const AuthProvider = ({ children }) => {
     }, remainingTime);
 
     return () => clearTimeout(timer);
-
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
-
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+// Custom hook for easy access
+export const useAuth = () => useContext(AuthContext);
