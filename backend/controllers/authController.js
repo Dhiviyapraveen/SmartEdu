@@ -46,7 +46,7 @@ exports.register = async (req, res) => {
         email: user.email,
         grade: user.grade
       },
-      token: generateToken(user._id)
+      token: generateToken(user)
     });
 
   } catch (error) {
@@ -78,7 +78,7 @@ exports.login = async (req, res) => {
           email: user.email,
           grade: user.grade
         },
-        token: generateToken(user._id)
+        token: generateToken(user)
       });
 
     } else {

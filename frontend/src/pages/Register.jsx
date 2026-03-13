@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { FaUser, FaLock, FaEnvelope, FaGraduationCap } from "react-icons/fa";
+import { FaUser, FaLock, FaEnvelope, FaGraduationCap, FaArrowLeft } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import api from "../api/axios";
 
 export default function Register() {
 
@@ -13,19 +15,18 @@ export default function Register() {
     password: "",
     grade: ""
   });
-
+  const { login } = useAuth();
+  
   const handleRegister = async (e) => {
     e.preventDefault();
     console.log("Sending data:", registerData);
 
     try {
-      const res = await axios.post(
-        "http://localhost:5001/api/auth/register",
-        registerData
-      );
+      const res = await api.post("/auth/register", registerData);
 
       if (res.data.success) {
         alert("Registration successful!");
+        login(res.data.token);
         navigate("/profile-setup");
       } else {
         alert(res.data.message);
@@ -40,7 +41,13 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
       <div className="bg-gray-800 rounded-3xl shadow-2xl w-full max-w-md p-10">
-
+        <button
+          onClick={() => navigate("/")} 
+          className="flex items-center gap-2 mb-6 text-gray-400 hover:text-purple-400 font-semibold"
+        >
+          <FaArrowLeft />
+          Back
+        </button>
         <h2 className="text-3xl font-bold mb-6 text-white text-center">
           Create Account
         </h2>

@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaArrowLeft } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import api from "../api/axios";
+
 
 export default function Login() {
       const [loginData, setLoginData] = useState({
@@ -10,21 +13,19 @@ export default function Login() {
         });
     
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-        const res = await axios.post("http://localhost:5001/api/auth/login", loginData);
+        const res = await api.post("/auth/login", loginData);
 
         if (res.data.success) {
-        alert("Login successful!");
+          alert("Login successful!");
 
-        // store user info if needed
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-
-        // redirect
-        navigate("/dashboard");
+          login(res.data.token);
+          navigate("/dashboard");
         } else {
         alert(res.data.message);
         }
@@ -37,6 +38,13 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
       <div className="bg-gray-800 rounded-3xl shadow-2xl w-full max-w-md p-10">
+        <button
+          onClick={() => navigate("/")} 
+          className="flex items-center gap-2 mb-6 text-gray-400 hover:text-purple-400 font-semibold"
+        >
+          <FaArrowLeft />
+          Back
+        </button>
         <h2 className="text-3xl font-bold mb-6 text-white text-center">Welcome Back</h2>
         <form onSubmit={handleLogin} className="space-y-6">
           {/* Email Field */}

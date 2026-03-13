@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import {
   FaRobot,
   FaBrain,
@@ -15,16 +16,16 @@ import {
 export default function Dashboard() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
 
   const handleLogout = () => {
     // remove saved login data
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    logout();
 
     // redirect to home page
     navigate("/");
   };
-
+  
   return (
     <div className="flex h-screen bg-gray-900 text-gray-200">
 

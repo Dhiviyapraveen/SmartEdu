@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
   },
   password: String,
   grade: Number,
+  interestedSubjects: {
+    type: [String],
+    default: []
+  },
   xp: {
     type: Number,
     default: 0
