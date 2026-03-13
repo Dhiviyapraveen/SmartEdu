@@ -1,16 +1,10 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { FaUser, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaLock } from "react-icons/fa";
 
 export default function Login() {
       const [loginData, setLoginData] = useState({
-        email: "",
-        password: ""
-        });
-    
-        const [registerData, setRegisterData] = useState({
-        name: "",
         email: "",
         password: ""
         });
@@ -45,12 +39,19 @@ export default function Login() {
       <div className="bg-gray-800 rounded-3xl shadow-2xl w-full max-w-md p-10">
         <h2 className="text-3xl font-bold mb-6 text-white text-center">Welcome Back</h2>
         <form onSubmit={handleLogin} className="space-y-6">
-          {/* Username Field */}
+          {/* Email Field */}
           <div className="relative">
-            <FaUser className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
+            <FaEnvelope className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
             <input
-              type="text"
-              placeholder="Username"
+              type="email"
+              placeholder="Email"
+              value={loginData.email}
+              onChange={(e) =>
+                setLoginData({
+                  ...loginData,
+                  email: e.target.value
+                })
+              }
               className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
               required
             />
@@ -62,6 +63,13 @@ export default function Login() {
             <input
               type="password"
               placeholder="Password"
+              value={loginData.password}
+              onChange={(e) =>
+                setLoginData({
+                  ...loginData,
+                  password: e.target.value
+                })
+              }
               className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
               required
             />
