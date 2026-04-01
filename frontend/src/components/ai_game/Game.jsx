@@ -65,6 +65,9 @@ export default function AIQuestOpenWorld() {
   const [newlyCompleted, setNewlyCompleted] = useState([]);
   const sessionCompletedRef = useRef(new Set());
 
+  // Derive subLessons from activeLesson if available
+  const subLessons = useMemo(() => activeLesson?.subLessons || [], [activeLesson]);
+
   // 1. Fetch User Profile (to get XP and interestedSubjects)
   useEffect(() => {
     const initGameData = async () => {
@@ -766,7 +769,9 @@ export default function AIQuestOpenWorld() {
       {/* Multi-Game Reading Phase */}
       {playingPlatformer && nearBuilding && (() => {
         const gameProps = {
-          lesson: subLessons.length > 0 && subLessons[nearBuilding.questIndex] ? subLessons[nearBuilding.questIndex] : quests[nearBuilding.questIndex],
+          lesson: (subLessons && subLessons.length > 0 && subLessons[nearBuilding.questIndex]) 
+            ? subLessons[nearBuilding.questIndex] 
+            : quests[nearBuilding.questIndex],
           onComplete: () => {
             setPlayingPlatformer(false);
             setShowQuiz(true);
@@ -797,7 +802,9 @@ export default function AIQuestOpenWorld() {
       {showQuiz && nearBuilding && (
         <QuizModal
           isOpen={true}
-          lesson={subLessons.length > 0 && subLessons[nearBuilding.questIndex] ? subLessons[nearBuilding.questIndex] : quests[nearBuilding.questIndex]}
+          lesson={(subLessons && subLessons.length > 0 && subLessons[nearBuilding.questIndex]) 
+            ? subLessons[nearBuilding.questIndex] 
+            : quests[nearBuilding.questIndex]}
           onClose={handleCloseQuiz}
         />
       )}
