@@ -1,9 +1,9 @@
-import axios from "axios";
+import { motion } from "framer-motion";
+import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { FaUser, FaLock, FaEnvelope, FaGraduationCap, FaArrowLeft } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import api from "../api/axios";
+import { FaUser, FaLock, FaEnvelope, FaGraduationCap, FaArrowLeft } from "react-icons/fa";
 
 export default function Register() {
 
@@ -16,7 +16,7 @@ export default function Register() {
     grade: ""
   });
   const { login } = useAuth();
-  
+
   const handleRegister = async (e) => {
     e.preventDefault();
     console.log("Sending data:", registerData);
@@ -39,117 +39,148 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
-      <div className="bg-gray-800 rounded-3xl shadow-2xl w-full max-w-md p-10">
-        <button
-          onClick={() => navigate("/")} 
-          className="flex items-center gap-2 mb-6 text-gray-400 hover:text-purple-400 font-semibold"
-        >
-          <FaArrowLeft />
-          Back
-        </button>
-        <h2 className="text-3xl font-bold mb-6 text-white text-center">
-          Create Account
-        </h2>
+    <div className="relative h-screen bg-[#0A0C10] text-gray-200 overflow-hidden font-sans selection:bg-purple-500/30 selection:text-white flex items-center justify-center p-4">
+      
+      {/* ----------------- Cinematic Foundation (Zen-Professional) ----------------- */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        {/* Obsidian Micro-Grid (Dots) */}
+        <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#A855F7 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }}></div>
+        
+        {/* Structural Schematics (Large Lines) */}
+        <svg className="absolute inset-0 w-full h-full opacity-[0.1] pointer-events-none">
+          <pattern id="structuralGridReg" width="400" height="400" patternUnits="userSpaceOnUse">
+            <path d="M 400 0 L 0 0 0 400" fill="none" stroke="#A855F7" strokeWidth="0.5" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#structuralGridReg)" />
+        </svg>
 
-        <form onSubmit={handleRegister} className="space-y-6">
+        {/* Soft Gradient Mesh */}
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div 
+            className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[60%] bg-fuchsia-600/10 rounded-full blur-[120px]"
+            animate={{ x: [0, -30, 0], y: [0, -20, 0] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+      </div>
 
+      {/* ---------------------- Register Card ---------------------- */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative z-10 w-full max-w-md bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-8 shadow-2xl overflow-hidden"
+      >
+        {/* Card Decorative Glow */}
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-fuchsia-600/20 blur-[60px] rounded-full"></div>
+
+        {/* Brand Header */}
+        <div className="flex flex-col items-center mb-6 text-center">
+          <div
+            onClick={() => navigate("/")}
+            className="w-12 h-12 bg-purple-600 rounded-2xl flex items-center justify-center text-xl shadow-xl shadow-purple-500/20 mb-4 cursor-pointer hover:scale-110 transition-transform"
+          >🚀</div>
+          <h1 className="text-[10px] font-black text-purple-400 uppercase tracking-[0.4em] mb-1">Initialize protocol</h1>
+          <h2 className="text-3xl font-black text-white uppercase tracking-widest leading-none">Create <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-500">Account</span></h2>
+        </div>
+
+        <form onSubmit={handleRegister} className="space-y-3">
           {/* Username */}
-          <div className="relative">
-            <FaUser className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Username"
-              required
-              value={registerData.name}
-              onChange={(e) =>
-                setRegisterData({
-                  ...registerData,
-                  name: e.target.value
-                })
-              }
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
+          <div className="space-y-1">
+            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest ml-4">Neural Name</label>
+            <div className="relative group">
+              <FaUser className="absolute top-1/2 left-5 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-400 transition-colors" />
+              <input
+                type="text"
+                placeholder="USER_IDENTIFIER"
+                value={registerData.name}
+                onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
+                className="w-full pl-14 pr-6 py-3.5 rounded-[1.5rem] bg-white/5 border border-white/5 text-white placeholder-gray-600 text-xs font-bold tracking-widest focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all"
+                required
+              />
+            </div>
           </div>
 
           {/* Email */}
-          <div className="relative">
-            <FaEnvelope className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={registerData.email}
-              onChange={(e) =>
-                setRegisterData({
-                  ...registerData,
-                  email: e.target.value
-                })
-              }
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
+          <div className="space-y-1">
+            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest ml-4">Neural identifier</label>
+            <div className="relative group">
+              <FaEnvelope className="absolute top-1/2 left-5 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-400 transition-colors" />
+              <input
+                type="email"
+                placeholder="EMAIL@TERMINAL.COM"
+                value={registerData.email}
+                onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+                className="w-full pl-14 pr-6 py-3.5 rounded-[1.5rem] bg-white/5 border border-white/5 text-white placeholder-gray-600 text-xs font-bold tracking-widest focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all"
+                required
+              />
+            </div>
           </div>
 
           {/* Grade Dropdown */}
-          <div className="relative">
-            <FaGraduationCap className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
-            <select
-              required
-              value={registerData.grade}
-              onChange={(e) =>
-                setRegisterData({
-                  ...registerData,
-                  grade: Number(e.target.value)
-                })
-              }
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
-            >
-              <option value="">Select Grade</option>
-              <option value="6">Grade 6</option>
-              <option value="7">Grade 7</option>
-              <option value="8">Grade 8</option>
-              <option value="9">Grade 9</option>
-            </select>
+          <div className="space-y-1">
+            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest ml-4">Academy Level</label>
+            <div className="relative group">
+              <FaGraduationCap className="absolute top-1/2 left-5 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-400 transition-colors z-10" />
+              <select
+                required
+                value={registerData.grade}
+                onChange={(e) => setRegisterData({ ...registerData, grade: Number(e.target.value) })}
+                className="w-full pl-14 pr-6 py-3.5 rounded-[1.5rem] bg-white/5 border border-white/5 text-white focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-xs font-bold tracking-widest appearance-none cursor-pointer relative z-0"
+              >
+                <option value="" className="bg-[#0A0C10]">SELECT_LEVEL</option>
+                <option value="6" className="bg-[#0A0C10]">GRADE 06</option>
+                <option value="7" className="bg-[#0A0C10]">GRADE 07</option>
+                <option value="8" className="bg-[#0A0C10]">GRADE 08</option>
+                <option value="9" className="bg-[#0A0C10]">GRADE 09</option>
+              </select>
+              <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500 text-[8px]">▼</div>
+            </div>
           </div>
 
           {/* Password */}
-          <div className="relative">
-            <FaLock className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={registerData.password}
-              onChange={(e) =>
-                setRegisterData({
-                  ...registerData,
-                  password: e.target.value
-                })
-              }
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
+          <div className="space-y-1">
+            <label className="text-[9px] font-black text-gray-500 uppercase tracking-widest ml-4">Access Key</label>
+            <div className="relative group">
+              <FaLock className="absolute top-1/2 left-5 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-400 transition-colors" />
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={registerData.password}
+                onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+                className="w-full pl-14 pr-6 py-3.5 rounded-[1.5rem] bg-white/5 border border-white/5 text-white placeholder-gray-600 text-xs font-bold tracking-widest focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all"
+                required
+              />
+            </div>
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 bg-purple-500 rounded-xl text-white font-bold hover:bg-purple-400 transition shadow-lg"
+            className="group relative w-full py-4 rounded-[1.5rem] bg-purple-600 text-white font-black text-[10px] uppercase tracking-[0.3em] shadow-[0_0_40px_rgba(168,85,247,0.3)] hover:shadow-[0_0_60px_rgba(168,85,247,0.5)] overflow-hidden transition-all duration-500 mt-2"
           >
-            Register
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+            Sync Account
           </button>
-
         </form>
 
-        <p className="text-gray-400 mt-6 text-center">
-          Already have an account?{" "}
-          <span
-            className="text-purple-400 font-bold cursor-pointer hover:underline"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </span>
-        </p>
+        <div className="mt-6 pt-4 border-t border-white/5 text-center">
+          <p className="text-gray-500 text-[9px] font-black uppercase tracking-[0.2em] leading-relaxed">
+            Protocol already synchronized? {" "}
+            <span
+              className="text-purple-400 cursor-pointer hover:text-fuchsia-400 transition-colors"
+              onClick={() => navigate("/login")}
+            >
+              Access Terminal
+            </span>
+          </p>
+        </div>
 
-      </div>
+        <button
+          onClick={() => navigate("/")}
+          className="w-full mt-4 flex items-center justify-center gap-2 text-[8px] font-black text-gray-600 hover:text-white uppercase tracking-[0.3em] transition-colors"
+        >
+          <FaArrowLeft /> Abort mission
+        </button>
+      </motion.div>
     </div>
   );
 }

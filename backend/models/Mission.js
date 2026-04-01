@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const missionSchema = new mongoose.Schema({
   title: String,
   description: String,
-  courseId: {
+  lessonId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Course"
+    ref: "Lesson"
   },
   xpReward: Number
 });

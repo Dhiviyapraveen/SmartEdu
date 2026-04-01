@@ -6,6 +6,8 @@ import ProfileSetup from "./pages/ProfileSetup"
 import Dashboard from "./pages/Dashboard"
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
+import AIGame from "./components/ai_game/Game";
+import Leaderboard from "./pages/Leaderboard";
 
 function App() {
   return (
@@ -25,6 +27,16 @@ function App() {
         <Route path="/profile" element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path="/ai" element={
+          <ProtectedRoute>
+            <AIGame />
+          </ProtectedRoute>
+        } />
+        <Route path="/leaderboard" element={
+          <ProtectedRoute>
+            <Leaderboard />
           </ProtectedRoute>
         } />
       </Routes>
