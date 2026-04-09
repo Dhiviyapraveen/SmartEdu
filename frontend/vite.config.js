@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5001',
+        target: 'https://smartedu-t2x0.onrender.com',
         changeOrigin: true,
       },
     },
